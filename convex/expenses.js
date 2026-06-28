@@ -1,6 +1,6 @@
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
-import { internal } from "./_generated/api";
+import { getCurrentUserDoc } from "./lib/getCurrentUser";
 
 // Create a new expense
 export const createExpense = mutation({
@@ -21,8 +21,7 @@ export const createExpense = mutation({
     groupId: v.optional(v.id("groups")),
   },
   handler: async (ctx, args) => {
-    // Use centralized getCurrentUser function
-    const user = await ctx.runQuery(internal.users.getCurrentUser);
+    const user = await getCurrentUserDoc(ctx);
 
     // If there's a group, verify the user is a member
     if (args.groupId) {
@@ -72,7 +71,7 @@ export const createExpense = mutation({
 export const getExpensesBetweenUsers = query({
   args: { userId: v.id("users") },
   handler: async (ctx, { userId }) => {
-    const me = await ctx.runQuery(internal.users.getCurrentUser);
+    const me = await getCurrentUserDoc(ctx);
     if (me._id === userId) throw new Error("Cannot query yourself");
 
     /* ───── 1. One-on-one expenses where either user is the payer ───── */
@@ -173,8 +172,7 @@ export const deleteExpense = mutation({
     expenseId: v.id("expenses"),
   },
   handler: async (ctx, args) => {
-    // Get the current user
-    const user = await ctx.runQuery(internal.users.getCurrentUser);
+    const user = await getCurrentUserDoc(ctx);
 
     // Get the expense
     const expense = await ctx.db.get(args.expenseId);

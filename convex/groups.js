@@ -1,14 +1,13 @@
 import { query } from "./_generated/server";
 import { v } from "convex/values";
-import { internal } from "./_generated/api";
+import { getCurrentUserDoc } from "./lib/getCurrentUser";
 
 export const getGroupOrMembers = query({
   args: {
     groupId: v.optional(v.id("groups")), // Optional - if provided, will return details for just this group
   },
   handler: async (ctx, args) => {
-    // Use centralized getCurrentUser function
-    const currentUser = await ctx.runQuery(internal.users.getCurrentUser);
+    const currentUser = await getCurrentUserDoc(ctx);
 
     // Get all groups where the user is a member
     const allGroups = await ctx.db.query("groups").collect();
@@ -80,8 +79,7 @@ export const getGroupOrMembers = query({
 export const getGroupExpenses = query({
   args: { groupId: v.id("groups") },
   handler: async (ctx, { groupId }) => {
-    // Use centralized getCurrentUser function
-    const currentUser = await ctx.runQuery(internal.users.getCurrentUser);
+    const currentUser = await getCurrentUserDoc(ctx);
 
     const group = await ctx.db.get(groupId);
     if (!group) throw new Error("Group not found");

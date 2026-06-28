@@ -1,15 +1,14 @@
 // convex/contacts.js
 import { query, mutation } from "./_generated/server";
 import { v } from "convex/values";
-import { internal } from "./_generated/api";
+import { getCurrentUserDoc } from "./lib/getCurrentUser";
 
 /* ──────────────────────────────────────────────────────────────────────────
    1. getAllContacts – 1‑to‑1 expense contacts + groups
    ──────────────────────────────────────────────────────────────────────── */
 export const getAllContacts = query({
   handler: async (ctx) => {
-    // Use the centralized getCurrentUser instead of duplicating auth logic
-    const currentUser = await ctx.runQuery(internal.users.getCurrentUser);
+    const currentUser = await getCurrentUserDoc(ctx);
 
     /* ── personal expenses where YOU are the payer ─────────────────────── */
     const expensesYouPaid = await ctx.db
@@ -89,8 +88,7 @@ export const createGroup = mutation({
     members: v.array(v.id("users")),
   },
   handler: async (ctx, args) => {
-    // Use the centralized getCurrentUser instead of duplicating auth logic
-    const currentUser = await ctx.runQuery(internal.users.getCurrentUser);
+    const currentUser = await getCurrentUserDoc(ctx);
 
     if (!args.name.trim()) throw new Error("Group name cannot be empty");
 
