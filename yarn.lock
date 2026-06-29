@@ -3963,7 +3963,7 @@ next-themes@^0.4.6:
   resolved "https://registry.npmjs.org/next-themes/-/next-themes-0.4.6.tgz"
   integrity sha512-pZvgD5L0IEvX5/9GWyHMf3m8BKiVQwsCMHfoFosXtXBMnaS0ZnIJ9ST4b4NqLVKDEm8QBxoNNGNaBv2JNF6XNA==
 
-"next@^13.5.7 || ^14.2.25 || ^15.2.3 || ^16", next@^15.2.6, next@>=12.0.0:
+"next@^13.5.7 || ^14.2.25 || ^15.2.3 || ^16", next@^15.5.19, next@>=12.0.0:
   version "15.5.19"
   resolved "https://registry.npmjs.org/next/-/next-15.5.19.tgz"
   integrity sha512-xNOW6tYshGX1/Oi3F8uuk4gpDeWsSUE/1Z0G5uUMekIxaQ0xc03UXd9II0VQHYMWviMeA0OHpJFAKsHf8bTYVg==
